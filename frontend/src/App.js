@@ -14,8 +14,6 @@ function App() {
           <Route path="/" />
         </Switch>
       </Container>
-
-      <h1>Hello World</h1>
     </div>
   );
 }
