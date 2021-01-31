@@ -32,6 +32,7 @@ class UploadForm extends Component {
         },
       })
       .then((response) => {
+        console.log(response.data)
         this.setState({
           file: null,
           fileName: "",

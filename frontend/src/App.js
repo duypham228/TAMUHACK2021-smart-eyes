@@ -23,7 +23,6 @@ function App() {
           <Route exact path="/" component={Home} />
         </Switch>
       </Container>
-<<<<<<< HEAD
       <footer
         style={{
           backgroundColor: "black",
@@ -36,8 +35,6 @@ function App() {
           Copyrights Noobs Tech
         </h5>
       </footer>
-=======
->>>>>>> abecb802424ce5fbfc3e25f330638e8f7a8776af
     </div>
   );
 }

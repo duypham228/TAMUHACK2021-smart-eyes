@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require("path");
 const multer = require("multer");
 const { v4 } = require("uuid");
+const { spawn } = require("child_process");
 const storage = multer.diskStorage({
   destination: "./known/",
   filename: function (req, file, cb) {
@@ -28,8 +29,18 @@ const upload = multer({
 }).single("myImage");
 router.route("/").post((req, res) => {
   upload(req, res, (err) => {
-    if (!err) return res.sendStatus(200);
-    else return res.sendStatus(500);
+    let dataToSend = null;
+    const pyScript = spawn('python', ['app.py']);
+    pyScript.stdout.on('data', (data) => {
+      console.log("pip data from python script...");
+      dataToSend = data.toString();
+    })
+    pyScript.on('close', (code) => {
+      console.log(`child process close all stdio with code ${code}`);
+      if (!err) return res.send(dataToSend);
+      else return res.sendStatus(500);
+    })
+
   });
 });
 module.exports = router;
