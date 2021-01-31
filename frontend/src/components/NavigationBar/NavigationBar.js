@@ -1,41 +1,33 @@
 import React, { Component } from "react";
 import { Menu, Segment } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
-export default class MenuExampleInvertedSecondary extends Component {
-  state = { activeItem: null };
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
-  componentDidMount() {
-    let path = window.location.pathname;
-    if (path === "/") {
-      this.setState({ activeItem: "home" });
-    } else {
-      this.setState({ activeItem: path.slice(1) });
-    }
-  }
+import { withRouter, NavLink } from "react-router-dom";
+class NavigationBar extends Component {
   render() {
-    const { activeItem } = this.state;
-
+    let activeItem = this.props.location.pathname;
+    if (activeItem === "/") {
+      activeItem = "home";
+    } else {
+      activeItem = activeItem.slice(1);
+    }
     return (
-      <Segment inverted>
-        <Menu inverted pointing secondary>
+      <Segment inverted size="mini">
+        <Menu size="small" inverted pointing secondary>
           <Menu.Item
             as={NavLink}
             to="/"
             name="home"
             exact
             active={activeItem === "home"}
-            onClick={this.handleItemClick}
           />
           <Menu.Item
             as={NavLink}
             to="/upload"
             name="upload"
             active={activeItem === "upload"}
-            onClick={this.handleItemClick}
           />
         </Menu>
       </Segment>
     );
   }
 }
+export default withRouter(NavigationBar);
