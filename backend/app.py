@@ -1,30 +1,37 @@
 import face_recognition
-import os
+import os, os.path
 import cv2
 import numpy as np
+from PIL import Image
 
 # Get the camera for taking video
 video = cv2.VideoCapture(0)
 
-KNOWN_DIR = "known"
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+KNOWN_DIR = os.path.join(CUR_DIR, 'known')
 TOL = 0.45
 
-# load image of known people to process
-duy_image = face_recognition.load_image_file("known/duy.jpg")
-
-# Encoding the known people face
-duy_face_encoding = face_recognition.face_encodings(duy_image)[0]
-
-
-
 # array contains known face encoding
-known_face_encodings = [
-    duy_face_encoding
-]
+known_face_encodings = []
 
-known_face_names = [
-    "Member"
-]
+for filename in os.listdir(KNOWN_DIR):
+    img_path = os.path.join(KNOWN_DIR, filename)
+    if img_path is not None:
+        face_image = face_recognition.load_image_file(img_path)
+        image_face_encoding = face_recognition.face_encodings(face_image)[0]
+        known_face_encodings.append(image_face_encoding)
+
+# # load image of known people to process
+# duy_image = face_recognition.load_image_file("known/duy.jpg")
+
+# # Encoding the known people face
+# duy_face_encoding = face_recognition.face_encodings(duy_image)[0]
+
+
+
+# known_face_names = [
+#     "Member"
+# ]
 
 # array contains location all the faces detected from video capture in order to draw box
 face_locations = []
@@ -61,13 +68,13 @@ while True:
             # # If a match was found in known_face_encodings, just use the first one.
             if True in matches:
                 first_match_index = matches.index(True)
-                name = known_face_names[first_match_index]
+                name = "Member"
 
             # Or instead, use the known face with the smallest distance to the new face
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
-                name = known_face_names[best_match_index]
+                name = "Member"
 
             face_names.append(name)
 
