@@ -25,7 +25,6 @@ const upload = multer({
       return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
     }
   },
-  limits: { fileSize: 1000000 },
 }).single("myImage");
 router.route("/").post((req, res) => {
   upload(req, res, (err) => {
@@ -37,9 +36,10 @@ router.route("/").post((req, res) => {
     })
     pyScript.on('close', (code) => {
       console.log(`child process close all stdio with code ${code}`);
-      if (!err) return res.send(dataToSend);
-      else return res.sendStatus(500);
+      
     })
+    if (!err) return res.send(dataToSend);
+    else return res.sendStatus(500);
 
   });
 });
